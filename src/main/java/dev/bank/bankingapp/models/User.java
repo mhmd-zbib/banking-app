@@ -21,7 +21,7 @@ public class User {
     private String phone;
     private boolean isEmailVerified = false;
     private boolean isAccountVerified = false;
-    
+
     @Embedded
     private Address address;
 
