@@ -23,7 +23,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleGlobalException() {
+    public ResponseEntity handleGlobalException(Exception ex) {
+        System.out.println(ex.getMessage());
+
         ExceptionResponse errorResponse = ExceptionResponse.builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("Something went wrong")

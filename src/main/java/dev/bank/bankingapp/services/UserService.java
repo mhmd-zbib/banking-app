@@ -2,18 +2,17 @@ package dev.bank.bankingapp.services;
 
 import dev.bank.bankingapp.dto.UserDTO;
 import dev.bank.bankingapp.models.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
     User createUser(UserDTO user);
 
-    User getUserByUsername(String username);
+    void deleteUser(Long id);
 
-    void deleteUser(String username);
+    User getUserById(Long id);
 
-    User updateUser(User user);
-
-    User getUserById(int id);
-
+    Page<User> listUsers(Pageable pageable);
 
 }

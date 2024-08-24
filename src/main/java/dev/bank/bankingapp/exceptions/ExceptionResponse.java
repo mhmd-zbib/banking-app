@@ -12,4 +12,4 @@ import lombok.NoArgsConstructor;
 public class ExceptionResponse {
     private Integer statusCode;
     private String message;
- }
+}
