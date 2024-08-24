@@ -1,7 +1,7 @@
 package dev.bank.bankingapp.controllers;
 
 
-import dev.bank.bankingapp.dto.UserDTO;
+import dev.bank.bankingapp.dto.request.UserRequest;
 import dev.bank.bankingapp.models.User;
 import dev.bank.bankingapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> createUser(@RequestBody UserRequest userDTO) {
         User user = userService.createUser(userDTO);
         return ResponseEntity.ok(user);
     }

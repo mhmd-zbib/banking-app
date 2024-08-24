@@ -1,6 +1,6 @@
 package dev.bank.bankingapp.services;
 
-import dev.bank.bankingapp.dto.UserDTO;
+import dev.bank.bankingapp.dto.request.UserRequest;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
 import dev.bank.bankingapp.models.User;
 import dev.bank.bankingapp.repositories.UserRepository;
@@ -20,8 +20,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private WalletService walletService;
+
     @Override
-    public User createUser(UserDTO user) {
+    public User createUser(UserRequest user) {
         User newUser = User.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -31,7 +34,10 @@ public class UserServiceImpl implements UserService {
                 .phone(user.getPhone())
                 .address(user.getAddress())
                 .build();
-        return userRepository.save(newUser);
+
+        User createdUser = userRepository.save(newUser);
+        walletService.createWallet(createdUser.getId());
+        return createdUser;
     }
 
     @Override

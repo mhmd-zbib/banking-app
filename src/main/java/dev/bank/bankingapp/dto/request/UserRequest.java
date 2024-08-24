@@ -1,4 +1,4 @@
-package dev.bank.bankingapp.dto;
+package dev.bank.bankingapp.dto.request;
 
 import dev.bank.bankingapp.models.Address;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public class UserRequest {
     private String firstName;
     private String lastName;
     private String email;
