@@ -6,7 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class TransactionRequest {
+public class TransferRequest {
     private BigDecimal amount;
 
     private String description;

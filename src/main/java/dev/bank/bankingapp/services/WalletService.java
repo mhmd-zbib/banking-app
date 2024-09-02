@@ -1,19 +1,23 @@
 package dev.bank.bankingapp.services;
 
-import dev.bank.bankingapp.dto.request.TransactionRequest;
-import dev.bank.bankingapp.dto.response.EntityResponse;
+import dev.bank.bankingapp.dto.request.TransferRequest;
+import dev.bank.bankingapp.dto.request.WalletRequest;
 import dev.bank.bankingapp.models.Wallet;
+
+import java.util.Set;
 
 public interface WalletService {
 
-    EntityResponse createWallet(Long userId);
+    Wallet createWallet(WalletRequest walletRequest);
 
-    Wallet getWallet(Long userId);
+    Wallet getWalletById(Long walletId);
 
-    EntityResponse updateWallet(Wallet wallet);
+//    Wallet updateWallet(WalletRequest walletRequest);
 
-    EntityResponse deleteWallet(Long userId);
+    Set<Wallet> getOwnerWallet(Long ownerId);
 
-    EntityResponse transferFunds(TransactionRequest transactionRequest);
+    void transferFunds(TransferRequest transactionRequest);
+
+    void deleteWallet(Long walletId);
 
 }

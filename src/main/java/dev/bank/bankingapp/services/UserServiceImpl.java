@@ -4,15 +4,11 @@ import dev.bank.bankingapp.dto.request.UserRequest;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
 import dev.bank.bankingapp.models.User;
 import dev.bank.bankingapp.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-
-class ErrorMessages {
-    public static final String USER_NOT_FOUND = "User not found";
-}
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,24 +16,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private WalletService walletService;
 
-    @Override
-    public User createUser(UserRequest user) {
-        User newUser = User.builder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .username(user.getUsername())
-                .phone(user.getPhone())
-                .address(user.getAddress())
+    @Transactional
+    public User createUser(UserRequest userRequest) {
+        User createdUser = User.builder()
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .email(userRequest.getEmail())
+                .password(userRequest.getPassword())
+                .username(userRequest.getUsername())
+                .phone(userRequest.getPhone())
+                .address(userRequest.getAddress())
                 .build();
 
-        User createdUser = userRepository.save(newUser);
-        walletService.createWallet(createdUser.getId());
-        return createdUser;
+        return userRepository.save(createdUser);
     }
 
     @Override
@@ -48,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) throws NotFoundException {
         return userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorMessages.USER_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException("user not found"));
     }
 
     @Override
