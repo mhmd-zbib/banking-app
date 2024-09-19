@@ -1,4 +1,4 @@
-package dev.bank.bankingapp.models;
+package dev.bank.bankingapp.models.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

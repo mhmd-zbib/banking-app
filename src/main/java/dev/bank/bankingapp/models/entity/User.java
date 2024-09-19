@@ -1,4 +1,4 @@
-package dev.bank.bankingapp.models;
+package dev.bank.bankingapp.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -46,7 +46,6 @@ public class User {
 
     @Embedded
     private Address address;
-
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

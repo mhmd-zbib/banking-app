@@ -1,4 +1,4 @@
-package dev.bank.bankingapp.dto.request;
+package dev.bank.bankingapp.models.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

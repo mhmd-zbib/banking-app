@@ -1,6 +1,6 @@
-package dev.bank.bankingapp.dto.request;
+package dev.bank.bankingapp.models.request;
 
-import dev.bank.bankingapp.models.Address;
+import dev.bank.bankingapp.models.entity.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

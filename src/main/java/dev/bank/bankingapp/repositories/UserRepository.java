@@ -1,6 +1,6 @@
 package dev.bank.bankingapp.repositories;
 
-import dev.bank.bankingapp.models.User;
+import dev.bank.bankingapp.models.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

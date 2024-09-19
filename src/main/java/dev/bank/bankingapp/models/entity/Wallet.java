@@ -1,8 +1,6 @@
-package dev.bank.bankingapp.models;
+package dev.bank.bankingapp.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dev.bank.bankingapp.enums.WalletStatus;
 import dev.bank.bankingapp.enums.WalletType;
 import jakarta.persistence.*;
@@ -12,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -40,5 +37,10 @@ public class Wallet {
     @JsonIgnore
     private User owner;
 
+    @OneToMany(mappedBy = "fromWallet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Transfer> sentTransfers;
+
+    @OneToMany(mappedBy = "toWallet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Transfer> recievedTransfers;
 
 }

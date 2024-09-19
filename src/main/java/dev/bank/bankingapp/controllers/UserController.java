@@ -1,9 +1,9 @@
 package dev.bank.bankingapp.controllers;
 
 
-import dev.bank.bankingapp.dto.request.UserRequest;
-import dev.bank.bankingapp.models.User;
-import dev.bank.bankingapp.models.Wallet;
+import dev.bank.bankingapp.models.request.UserRequest;
+import dev.bank.bankingapp.models.entity.User;
+import dev.bank.bankingapp.models.entity.Wallet;
 import dev.bank.bankingapp.services.UserService;
 import dev.bank.bankingapp.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,14 @@ import java.util.Set;
 @RequestMapping("user")
 public class UserController {
 
+    private final UserService userService;
+    private final WalletService walletService;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private WalletService walletService;
+    public UserController(UserService userService, WalletService walletService) {
+        this.userService = userService;
+        this.walletService = walletService;
+    }
 
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody UserRequest userDTO) {
@@ -53,7 +57,7 @@ public class UserController {
 
     @GetMapping("/{id}/wallets")
     public ResponseEntity<Set<Wallet>> getUserWallet(@PathVariable Long id) {
-        Set<Wallet> wallets = walletService.getOwnerWallet(id);
+        Set<Wallet> wallets = walletService.getOwnerWallets(id);
         return ResponseEntity.ok(wallets);
     }
 
