@@ -1,15 +1,20 @@
+
 spring:
-  application:
-    name: BankingApp
   datasource:
-    url: jdbc:postgresql://pg-21414e-integrarisk.l.aivencloud.com:24105/defaultdb?ssl=require&user=avnadmin&password=AVNS_E70PrGxU-da0dDhl55b
-    username: avnadmin
-    password: AVNS_E70PrGxU-da0dDhl55b
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:file:./data/testdb
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
     hibernate:
       ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
