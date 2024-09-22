@@ -1,4 +1,4 @@
-package dev.bank.bankingapp.enums;
+package dev.bank.bankingapp.models.enums;
 
 public enum WalletType {
     PERSONAL,

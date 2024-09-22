@@ -1,7 +1,7 @@
 package dev.bank.bankingapp.models.request;
 
-import dev.bank.bankingapp.enums.WalletStatus;
-import dev.bank.bankingapp.enums.WalletType;
+import dev.bank.bankingapp.models.enums.WalletStatus;
+import dev.bank.bankingapp.models.enums.WalletType;
 import lombok.*;
 
 import java.math.BigDecimal;

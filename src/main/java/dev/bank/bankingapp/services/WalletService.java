@@ -2,15 +2,15 @@ package dev.bank.bankingapp.services;
 
 import dev.bank.bankingapp.models.request.TransferRequest;
 import dev.bank.bankingapp.models.request.WalletRequest;
-import dev.bank.bankingapp.enums.WalletStatus;
+import dev.bank.bankingapp.models.enums.WalletStatus;
 import dev.bank.bankingapp.exceptions.errors.BadRequestException;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
 import dev.bank.bankingapp.models.entity.Transfer;
 import dev.bank.bankingapp.models.entity.User;
 import dev.bank.bankingapp.models.entity.Wallet;
-import dev.bank.bankingapp.repositories.TransferRepository;
-import dev.bank.bankingapp.repositories.UserRepository;
-import dev.bank.bankingapp.repositories.WalletRepository;
+import dev.bank.bankingapp.repositories.TransferRepo;
+import dev.bank.bankingapp.repositories.UserRepo;
+import dev.bank.bankingapp.repositories.WalletRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,16 +22,16 @@ import java.util.Set;
 public class WalletService {
 
     @Autowired
-    private WalletRepository walletRepository;
+    private WalletRepo walletRepository;
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepository;
 
     @Autowired
-    private TransferRepository transferRepository;
+    private TransferRepo transferRepository;
 
     @Transactional
     public Wallet createWallet(WalletRequest walletRequest) {

@@ -1,21 +1,31 @@
 package dev.bank.bankingapp.services;
 
-import dev.bank.bankingapp.models.request.UserRequest;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
 import dev.bank.bankingapp.models.entity.User;
-import dev.bank.bankingapp.repositories.UserRepository;
+import dev.bank.bankingapp.models.request.UserRequest;
+import dev.bank.bankingapp.repositories.UserRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService  {
+public class UserService implements UserDetailsService {
+
+    private final UserRepo userRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    public UserService(UserRepo userRepository) {
+        this.userRepository = userRepository;
+    }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws NotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(email));
+    }
 
     @Transactional
     public User createUser(UserRequest userRequest) {

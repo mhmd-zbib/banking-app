@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Set;
 
 @Repository
-public interface WalletRepository extends JpaRepository<Wallet, Long> {
+public interface WalletRepo extends JpaRepository<Wallet, Long> {
     Set<Wallet> findAllByOwnerId(Long id);
 }

@@ -1,9 +1,11 @@
 package dev.bank.bankingapp.controllers;
 
 
-import dev.bank.bankingapp.models.request.UserRequest;
 import dev.bank.bankingapp.models.entity.User;
 import dev.bank.bankingapp.models.entity.Wallet;
+import dev.bank.bankingapp.models.request.RegistrationRequest;
+import dev.bank.bankingapp.models.request.UserRequest;
+import dev.bank.bankingapp.services.RegistrationService;
 import dev.bank.bankingapp.services.UserService;
 import dev.bank.bankingapp.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,18 @@ public class UserController {
 
     private final UserService userService;
     private final WalletService walletService;
+    private final RegistrationService registrationService;
+
 
     @Autowired
-    public UserController(UserService userService, WalletService walletService) {
+    public UserController(UserService userService, WalletService walletService, RegistrationService registrationService) {
         this.userService = userService;
         this.walletService = walletService;
+        this.registrationService = registrationService;
+    }
+
+    public String register(@RequestBody RegistrationRequest request) {
+        return registrationService.register(request);
     }
 
     @PostMapping()
