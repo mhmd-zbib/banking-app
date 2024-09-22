@@ -21,10 +21,10 @@ public class AuthService {
     }
 
     public String register(RegistrationRequest request) {
-        boolean isValid = emailValidator.test(request.getEmail());
-        if (!isValid) {
-            throw new BadRequestException("Invalid email address");
-        }
+//        boolean isValid = emailValidator.test(request.getEmail());
+//        if (!isValid) {
+//            throw new BadRequestException("Invalid email address");
+//        }
         User user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -32,6 +32,7 @@ public class AuthService {
                 .password(request.getPassword())
                 .username(request.getUsername())
                 .userRole(UserRole.USER)
+                .phone(request.getPhone())
                 .build();
         userService.createUser(user);
         return "works";

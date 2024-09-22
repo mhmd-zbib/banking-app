@@ -2,6 +2,7 @@ package dev.bank.bankingapp.services;
 
 import dev.bank.bankingapp.exceptions.errors.BadRequestException;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
+import dev.bank.bankingapp.models.entity.ConfirmationToken;
 import dev.bank.bankingapp.models.entity.User;
 import dev.bank.bankingapp.repositories.UserRepo;
 import jakarta.transaction.Transactional;
@@ -13,16 +14,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepo userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
+
 
     @Autowired
-    public UserService(UserRepo userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepo userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, ConfirmationTokenService confirmationTokenService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
     @Override
@@ -44,10 +51,23 @@ public class UserService implements UserDetailsService {
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        User createdUser = userRepository.save(user);
 
-        // TODO: Send confirmation token
 
-        return userRepository.save(user);
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = ConfirmationToken
+                .builder()
+                .token(token)
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(15))
+                .user(user)
+                .build();
+
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        // TODO: Send email
+
+        return createdUser;
     }
 
 
