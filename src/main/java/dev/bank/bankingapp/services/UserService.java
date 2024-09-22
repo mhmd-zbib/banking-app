@@ -1,8 +1,8 @@
 package dev.bank.bankingapp.services;
 
+import dev.bank.bankingapp.exceptions.errors.BadRequestException;
 import dev.bank.bankingapp.exceptions.errors.NotFoundException;
 import dev.bank.bankingapp.models.entity.User;
-import dev.bank.bankingapp.models.request.UserRequest;
 import dev.bank.bankingapp.repositories.UserRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +10,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepo userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepo userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -28,18 +31,23 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User createUser(UserRequest userRequest) {
-        User createdUser = User.builder()
-                .firstName(userRequest.getFirstName())
-                .lastName(userRequest.getLastName())
-                .email(userRequest.getEmail())
-                .password(userRequest.getPassword())
-                .username(userRequest.getUsername())
-                .phone(userRequest.getPhone())
-                .address(userRequest.getAddress())
-                .build();
+    public User createUser(User user) {
+        boolean userEmailExists = userRepository.findByEmail(user.getEmail()).isPresent();
+        boolean userUsernameExists = userRepository.findByUsername(user.getUsername()).isPresent();
 
-        return userRepository.save(createdUser);
+        if (userEmailExists) {
+            throw new BadRequestException("Email already exists");
+        }
+        if (userUsernameExists) {
+            throw new BadRequestException("Username already exists");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
+        // TODO: Send confirmation token
+
+        return userRepository.save(user);
     }
 
 
@@ -58,5 +66,6 @@ public class UserService implements UserDetailsService {
         Page<User> users = userRepository.findAll(pageable);
         return users;
     }
+
 
 }
